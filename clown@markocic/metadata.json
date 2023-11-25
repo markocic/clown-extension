@@ -1,0 +1,9 @@
+{
+  "name": "Clown",
+  "description": "Displays clown emoji in the panel and plays clown theme song on press",
+  "uuid": "clown@markocic",
+  "shell-version": [
+    "45"
+  ],
+  "version": 1
+}
