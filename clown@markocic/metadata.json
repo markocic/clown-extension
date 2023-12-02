@@ -1,10 +1,10 @@
 {
   "name": "Clown",
-  "description": "Displays clown emoji in the panel and plays clown theme song on press",
+  "description": "Displays clown emoji in the panel and plays clown theme song on click",
   "uuid": "clown@markocic",
   "shell-version": [
     "45"
   ],
   "version": 1,
-  "url": "https://github.com/markocic/clown-extension.git"
+  "url": "https://github.com/markocic/clown-extension"
 }
