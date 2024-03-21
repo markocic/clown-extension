@@ -1,6 +1,8 @@
 import Gio from "gi://Gio";
 import GObject from "gi://GObject";
 import St from "gi://St";
+import GLib from "gi://GLib";
+import Meta from "gi://Meta";
 import {
   Extension,
   gettext as _,
@@ -22,15 +24,7 @@ constructor(menuAlignment: number, nameText: string, dontCreateMenu?: boolean, e
     });
 
     this.add_child(icon);
-    let soundPath = extensionPath + "/src/sounds/clown.ogg";
 
-    let player = global.display.get_sound_player();
-    let sound = Gio.File.new_for_path(soundPath);
-
-    this.connect("button-press-event",
-                 () => player.play_from_file(sound, "clown", null) );
-    this.connect("touch-event",
-                 () => player.play_from_file(sound, "clown", null) );
   }
 };
 
@@ -39,9 +33,39 @@ GObject.registerClass(ClownButton);
 export default class ClownExtension extends Extension {
   gsettings?: Gio.Settings
   _indicator: ClownButton | null
+  _SOUND_DURATION: number = 7583 // sound duration in milliseconds
+  _sound: Gio.File
+  _GLibLoopId: number
+  _player: Meta.SoundPlayer
+  _status: "playing" | "not_playing" = "not_playing"
+  _cancellable: Gio.Cancellable = new Gio.Cancellable();
+
+  playSound() {
+    if (this._status === "playing") {
+      this._cancellable.cancel();
+      this._cancellable = new Gio.Cancellable();
+      this._status = "not_playing"
+      GLib.source_remove(this._GLibLoopId)
+
+    } else if (this._status === "not_playing") {
+      this._status = "playing"
+
+      this._player.play_from_file(this._sound, "clown", this._cancellable)
+      this._GLibLoopId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this._SOUND_DURATION, () => {
+        this._player.play_from_file(this._sound, "clown", this._cancellable)
+
+        return GLib.SOURCE_CONTINUE;
+      })
+    }
+  }
 
   enable() {
     this._indicator = new ClownButton(0, "Clown", false, this.path);
+    this._sound = Gio.File.new_for_path(`${this.path}/src/sounds/clown.ogg`);
+    this._player = global.display.get_sound_player();
+    this._indicator.connect("button-press-event", () => this.playSound())
+    this._indicator.connect("touch-event", () => this.playSound())
+
     Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
 
