@@ -46,9 +46,7 @@ export default class ClownExtension extends Extension {
   }
 
   disable() {
-      if (this._indicator !== null) {
-          this._indicator.destroy();
-          this._indicator = null;
-      }
+      this._indicator?.destroy();
+      this._indicator = null;
   }
 }
