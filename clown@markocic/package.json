@@ -1,0 +1,27 @@
+{
+  "name": "Clown",
+  "version": "2",
+  "description": "Displays clown emoji in the panel and plays clown theme song on click",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markocic/clown-extension.git"
+  },
+  "author": "Marko Kocić <markokocic2000@gmail.com>",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/markocic/clown-extension/issues"
+  },
+  "homepage": "https://github.com/markocic/clown-extension#readme",
+  "sideEffects": false,
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-jsdoc": "^48.2.1",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@girs/gjs": "^3.2.9",
+    "@girs/gnome-shell": "^45.0.0-beta9"
+  }
+}
