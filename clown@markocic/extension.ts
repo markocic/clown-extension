@@ -28,7 +28,9 @@ constructor(menuAlignment: number, nameText: string, dontCreateMenu?: boolean, e
     let sound = Gio.File.new_for_path(soundPath);
 
     this.connect("button-press-event",
-                 () => { player.play_from_file(sound, "clown", null); });
+                 () => player.play_from_file(sound, "clown", null) );
+    this.connect("touch-event",
+                 () => player.play_from_file(sound, "clown", null) );
   }
 };
 
