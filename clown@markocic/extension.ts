@@ -34,7 +34,7 @@ constructor(menuAlignment: number, nameText: string, dontCreateMenu?: boolean, e
   }
 };
 
-const clownButton = GObject.registerClass(ClownButton);
+GObject.registerClass(ClownButton);
 
 export default class ClownExtension extends Extension {
   gsettings?: Gio.Settings
