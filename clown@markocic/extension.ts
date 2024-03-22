@@ -36,7 +36,7 @@ export default class ClownExtension extends Extension {
   _SOUND_DURATION: number = 7583 // sound duration in milliseconds
   _sound: Gio.File
   _GLibLoopId: number | null
-  _player: Meta.SoundPlayer
+  _player: Meta.SoundPlayer | null
   _status: "playing" | "not_playing" = "not_playing"
   _cancellable: Gio.Cancellable = new Gio.Cancellable();
 
@@ -52,9 +52,9 @@ export default class ClownExtension extends Extension {
     } else if (this._status === "not_playing") {
       this._status = "playing"
 
-      this._player.play_from_file(this._sound, "clown", this._cancellable)
+      this._player?.play_from_file(this._sound, "clown", this._cancellable)
       this._GLibLoopId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, this._SOUND_DURATION, () => {
-        this._player.play_from_file(this._sound, "clown", this._cancellable)
+        this._player?.play_from_file(this._sound, "clown", this._cancellable)
 
         return GLib.SOURCE_CONTINUE;
       })
@@ -79,5 +79,8 @@ export default class ClownExtension extends Extension {
           GLib.Source.remove(this._GLibLoopId);
           this._GLibLoopId = null
       }
+
+      this._cancellable.cancel();
+      this._player = null;
   }
 }
