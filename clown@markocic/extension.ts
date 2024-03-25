@@ -3,6 +3,8 @@ import GObject from "gi://GObject";
 import St from "gi://St";
 import GLib from "gi://GLib";
 import Meta from "gi://Meta";
+import Clutter from "gi://Clutter"
+
 import {
   Extension,
   gettext as _,
@@ -43,7 +45,11 @@ export default class ClownExtension extends Extension {
   _status: "playing" | "not_playing" = "not_playing";
   _cancellable: Gio.Cancellable = new Gio.Cancellable();
 
-  playSound() {
+  playSound(event: Clutter.Event) {
+      console.log("EVENT: " + event.type())
+      if (event.type() !== Clutter.EventType.BUTTON_PRESS || event.type() !== Clutter.EventType.TOUCH_END)
+          return;
+
     if (this._status === "playing") {
       this._cancellable.cancel();
       this._cancellable = new Gio.Cancellable();
@@ -70,8 +76,8 @@ export default class ClownExtension extends Extension {
     this._indicator = new ClownButton(0, "Clown", false, this.path);
     this._sound = Gio.File.new_for_path(`${this.path}/src/sounds/clown.ogg`);
     this._player = global.display.get_sound_player();
-    this._indicator.connect("button-press-event", () => this.playSound());
-    this._indicator.connect("touch-event", () => this.playSound());
+    this._indicator.connect("button-press-event", ( actor, event ) => this.playSound(event) );
+    this._indicator.connect("touch-event", (actor, event) => this.playSound(event));
 
     Main.panel.addToStatusArea(this.uuid, this._indicator);
   }
