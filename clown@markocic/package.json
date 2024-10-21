@@ -1,6 +1,6 @@
 {
   "name": "Clown",
-  "version": "5",
+  "version": "6",
   "description": "Displays clown emoji in the panel and plays clown theme song on click",
   "type": "module",
   "private": true,
