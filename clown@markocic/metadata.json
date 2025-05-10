@@ -3,8 +3,8 @@
   "description": "Displays clown emoji in the panel and plays clown theme song on click",
   "uuid": "clown@markocic",
   "shell-version": [
-    "45", "46", "47"
+    "45", "46", "47", "48"
   ],
-  "version": 6,
+  "version": 7,
   "url": "https://github.com/markocic/clown-extension"
 }
